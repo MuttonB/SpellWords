@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>拼单词</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+    <style>
+        @font-face {
+            font-family: "hy";
+            src: url(font/HYWenHei-85W.ttf);
+        }
+
+        body {
+            font-family: "hy";
+            background-color: rgb(116, 184, 186);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .main {
+            margin: auto;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            height: 88vh;
+            width: 334px;
+            justify-content: center;
+            border-radius: 20px;
+            background: url(img/Choose\ charcter\ -\ Menu.png) no-repeat;
+            background-size: cover;
+            overflow: hidden;
+            box-shadow: 0 -3px 1px 0 gainsboro;
+        }
+
+        #zh {
+            font-size: 22px;
+            background-color: rgba(0, 0, 0, 0.25);
+            box-shadow: 0 0 2px gainsboro;
+            border-radius: 8px;
+            background-size: contain;
+            width: 130px;
+            height: 44px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 30px;
+            color: whitesmoke;
+        }
+
+        ul {
+            display: flex;
+            justify-content: center;
+        }
+
+        li {
+            list-style: none;
+            background-color: #FFEA86;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 34px;
+            height: 34px;
+            margin: 0 2px;
+            font-weight: bold;
+            font-size: 20px;
+            border-radius: 8px;
+            transition: all 0.25s;
+        }
+
+        #tips {
+            height: 120px;
+            width: 120px;
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            background-color: rgba(20, 19, 19, 0.88);
+            box-shadow: 0 0 4px 0 gainsboro;
+            color: whitesmoke;
+            font-size: 22px;
+            margin: auto;
+            margin-top: -60px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            display: none;
+            opacity: 0;
+        }
+
+        .showTips {
+            display:flex !important;
+            animation: moveTips 1.5s linear;
+        }
+
+        @keyframes moveTips {
+            10% {
+                opacity: 1;
+            }
+
+            80% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0;
+            }
+        }
+
+        .minitop {
+            display: flex;
+            text-align: center;
+            justify-content: center;
+            position: absolute;
+            top: 60px;
+            width: 100%;
+        }
+
+        .minitop img {
+            width: 18px;
+        }
+
+        .minitop p {
+            margin: 0 8px;
+            display: flex;
+            align-items: center;
+            background-color: rgba(246, 239, 237, 0.7);
+            border-radius: 10px;
+            padding: 2px 12px;
+            transition: all 0.6s;
+        }
+
+        .minitop p:hover {
+            background-color: rgba(239, 215, 208, 0.7);
+        }
+
+        .minitop p:hover i {
+            display: block;
+        }
+
+        .minitop p span {
+            font-size: 18px;
+            color: darkblue;
+            margin-left: 6px;
+        }
+
+        .minitop p i {
+            font-style: normal;
+            position: absolute;
+            top: 30px;
+            margin-left: -4px;
+            font-size: 14px;
+            background-color: rgba(0, 0, 0, 0.6);
+            color: whitesmoke;
+            padding: 4px 8px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .contant {
+            height: 300px;
+            margin-top: 40px;
+        }
+
+        .contant .enter {
+            background-color: lemonchiffon;
+            width: 200px;
+            padding: 6px 0;
+            border-radius: 6px;
+            margin: 40px auto;
+            border: 3px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .contant .enter:hover {
+            opacity: 0.9;
+        }
+
+        .active {
+            background-color: #ea6d63;
+            border: 3px solid lemonchiffon;
+        }
+
+        .see {
+            padding: 4px 6px;
+            background-color: whitesmoke;
+            border-radius: 6px;
+            width: 78px;
+            margin: 0 auto;
+            transition: all 0.5s;
+            font-size: 14px;
+            box-sizing: content-box;
+        }
+
+        .see:hover {
+            background-color: #f7f1d4;
+            cursor: pointer;
+        }
+
+        .see p {
+            display: none;
+            font-size: 14px;
+            margin-top: 6px;
+            border-top: 2px solid gainsboro;
+            padding-top: 6px;
+        }
+
+        .topbox {
+            width: 88px;
+            height: 32px;
+            border-radius: 20px;
+            z-index: 999;
+            position: absolute;
+            right: 4px;
+            top: 6px;
+            padding: 0 12px;
+            background-color: rgba(0, 0, 0, 0.25);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transform: scale(0.8);
+        }
+
+        .topbox p {
+            height: 100%;
+            width: 50%;
+            display: flex;
+            align-items: center;
+        }
+
+        .topbox span {
+            display: flex;
+            align-items: center;
+            border-radius: 50%;
+            background-color: whitesmoke;
+            width: 8px;
+            display: block;
+            height: 8px;
+            margin-right: 1px;
+            border: 1px solid #FFEA86;
+        }
+
+        .topbox p:nth-child(1) span:nth-child(even) {
+            width: 9px;
+            height: 9px;
+        }
+
+        .topbox p:nth-child(2) {
+            border-radius: 50%;
+            height: 16px;
+            width: 16px;
+            background-color: white;
+            border: 3px solid #FFEA86;
+        }
+
+        .topbox p:nth-child(2)::before {
+            content: "";
+            border-left: 2px solid gainsboro;
+            height: 100%;
+            display: block;
+            position: absolute;
+            height: 18px;
+            left: 50%;
+        }
+
+        .enter:active {
+            background-color: #f76a6a !important;
+            border: 3px solid #FFEA86 !important;
+        }
+
+        .enActive {
+            background-color: #f76a6a !important;
+            border: 3px solid #FFEA86 !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main">
+        <div class="topbox">
+            <p><span></span><span></span><span></span></p>
+            <p></p>
+        </div>
+        <div class="minitop">
+            <p><img src="./img/星星pixel.png" alt=""><span id="succeed"></span><i>成功</i></p>
+            <p><img src="./img/垃圾桶pixel.png" alt=""><span id="error"></span><i>失败</i></p>
+        </div>
+        <div class="contant">
+            <p id="zh"></p>
+            <ul id="showWord">
+            </ul>
+            <p class="enter">ENTER</p>
+            <div class="see">忘记了
+                <p id="seeEn">word</p>
+            </div>
+            <div id="tips">ok</div>
+        </div>
+    </div>
+    <script>
+        var words = [
+            { "zh": "香蕉", "en": "banana" },
+            { "zh": "苹果", "en": "apple" },
+            { "zh": "橙子", "en": "orange" },
+            { "zh": "主题", "en": "subject" },
+            { "zh": "信", "en": "letter" },
+            { "zh": "路", "en": "road" },
+            { "zh": "有责任感的", "en": "responsible" }
+        ]
+        var zh = document.querySelector("#zh")
+        var ul = document.querySelector("#showWord")
+        var succeedDom = document.querySelector("#succeed")
+        var errorDom = document.querySelector("#error")
+        var enter = document.querySelector(".enter")
+        var en = []
+        var queen = 0
+        var succeed = 0
+        var error = 0
+        enter.onclick = function () {
+            next()
+        }
+        function show(queen) {
+            console.log(words[queen].en);
+            for (let i = 0; i < words[queen].en.length; i++) {
+                var li = document.createElement("li")
+                ul.appendChild(li)
+            }
+            en.push(words[queen].en)
+            zh.innerHTML = words[queen].zh
+            var li = document.querySelector("#showWord").children
+            li[0].className = "active"
+        }
+        function sTips() {
+            tips.className = "tips showTips"
+            setTimeout(function () {
+                tips.className = "tips"
+            }, 1500);
+        }
+        function active() {
+            for (let i = 0; i < li.length; i++) {
+                if (index >= 0) {
+                    li[i].className = ""
+                }
+            }
+            li[index].className = "active"
+        }
+        function end() {
+            tips.innerHTML = "完成"
+            enter.style.display = 'none'
+            document.querySelector(".see").style.display = "none"
+        }
+        show(queen)
+        var inputWord = []
+        var index = -1
+        var li = document.querySelector("#showWord").children
+
+        function update() {
+            succeedDom.innerHTML = succeed
+            errorDom.innerHTML = error
+        }
+        update()
+        var enter = document.querySelector(".enter")
+        enC = enter.getAttribute("class")
+        window.onkeydown = function (ele) {
+            if (ele.keyCode == 13) {
+                enter.className = enC + " enActive"
+            }
+        }
+        window.onkeyup = function (ele) {
+            if (ele.keyCode >= 65 && ele.keyCode <= 90 && li.length > index + 1) {
+                inputWord.push(ele.key)
+                index++
+                li[index].innerHTML = ele.key
+                active()
+            }
+
+            if (ele.keyCode == 8 && index > -1 && index <= li.length - 1) {
+                li[index].innerHTML = ""
+                inputWord.splice(inputWord.length - 1, 1)
+                index--
+                active()
+            }
+
+            if (ele.keyCode == 13) {
+                enter.className = enC
+                if (li.length == inputWord.length) {
+                    inputWord = inputWord.join("")
+                    console.log(inputWord, en);
+                }
+                if (inputWord.length != li.length) {
+                    tips.innerHTML = "未完成"
+                    sTips()
+                } else {
+                    if (queen > words.length - 1) {
+                        end()
+                    } else if (inputWord == en && queen < words.length) {
+                        tips.innerHTML = "答对"
+                        succeed++
+                        queen++
+                        sTips()
+                        clear()
+                        update()
+                    } else if (inputWord != en) {
+                        tips.innerHTML = "答错"
+                        error++
+                        sTips()
+                        clear()
+                        update()
+                    }
+                }
+            }
+        }
+
+        function next() {
+            if (li.length == inputWord.length) {
+                inputWord = inputWord.join("")
+                console.log(inputWord, en);
+            }
+            if (inputWord.length != li.length) {
+                tips.innerHTML = "未完成"
+                sTips()
+            } else {
+                if (inputWord == en && queen < words.length) {
+                    tips.innerHTML = "答对"
+                    succeed++
+                    queen++
+                    sTips()
+                    clear()
+                    update()
+                } else if (inputWord != en) {
+                    tips.innerHTML = "答错"
+                    error++
+                    sTips()
+                    clear()
+                    update()
+                }
+            }
+        }
+        function clear() {
+            var liLen = li.length
+            console.log(queen, words.length);
+            if (queen == words.length) {
+                end()
+            }
+            setTimeout(function () {
+                for (let i = 0; i < liLen; i++) {
+                    li[0].innerHTML = ""
+                    li[0].remove()
+                }
+                zh.innerHTML = ""
+                inputWord = []
+                index = -1
+                en = []
+                document.querySelector("#seeEn").style.display = "none"
+                show(queen)
+            }, 1500)
+        }
+        document.querySelector(".see").onclick = function () {
+            document.querySelector("#seeEn").innerHTML = words[queen].en
+            document.querySelector("#seeEn").style.display = "block"
+        }
+    </script>
+</body>
+
+</html>
